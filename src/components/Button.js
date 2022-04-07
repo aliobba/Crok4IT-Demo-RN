@@ -1,12 +1,13 @@
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const Button = ({ onSubmit, children }) => {
 
-
+    const { colors } = useTheme();
     return (
-        <TouchableOpacity style={styles.button} onPress={onSubmit}>
-            <Text style={styles.text}>
+        <TouchableOpacity style={{ ...styles.button, borderColor: colors.border }} onPress={onSubmit}>
+            <Text style={{ ...styles.text, color: colors.text }}>
                 {children}
             </Text>
         </TouchableOpacity>

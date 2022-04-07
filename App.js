@@ -11,11 +11,51 @@ import { store, persistor } from './src/redux/store'
 
 
 import { NavigationRoot } from './src/routes'
+import { AuthContext } from './src/components/AuthContext';
+
+const Light = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'white',
+    input: '#c9acd8',
+    label: 'black',
+    button: 'black',
+    border: 'black',
+  },
+};
+
+const Dark = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: '#5d0b87',
+    input: 'white',
+    label: 'white',
+    button: 'white',
+    border: 'white',
+  },
+};
 
 
 
 function App() {
   const scheme = useColorScheme();
+  const [theme, setTheme] = React.useState(scheme);
+
+  const authContext = React.useMemo(() => ({
+    theme: theme,
+    toggleTheme: () => {
+      // 🌞 -> 🌚
+      const nextTheme = theme === 'light' ? 'dark' : 'light';
+      console.log(nextTheme);
+      setTheme(nextTheme);
+    }
+  }), [theme]);
+
+  React.useEffect(() => {
+    setTheme(scheme);
+  }, [scheme]);
 
   return (
     <Provider store={store}>
@@ -24,11 +64,12 @@ function App() {
         persistor={persistor}
       >
 
-        <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme} >
+        <AuthContext.Provider value={authContext}>
+          <NavigationContainer theme={theme === 'dark' ? Dark : Light} >
 
-          <NavigationRoot />
-
-        </NavigationContainer>
+            <NavigationRoot />
+          </NavigationContainer>
+        </AuthContext.Provider>
       </PersistGate>
     </Provider>
   )

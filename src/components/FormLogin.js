@@ -1,18 +1,25 @@
 import React, { useRef } from 'react';
 import { View, StyleSheet, TextInput, TouchableOpacity, Text, ActivityIndicator, Dimensions } from 'react-native';
+import { useTheme } from '@react-navigation/native';
+
+import { AuthContext } from './AuthContext';
 
 
 const { width, height } = Dimensions.get('screen')
 
 const Formlogin = ({ onChangeUsername, onChangePassword, onSubmit, loading }) => {
-
+    
     const secondTextInput = useRef();
+
+    const { theme } = React.useContext(AuthContext);
+
+    const { colors } = useTheme();
 
     return (
         <View style={styles.container}>
 
-            <Text style={styles.label}>Nom d'utilisateur</Text>
-            <View style={styles.inputView}>
+            <Text style={{ ...styles.label, color: colors.label }}>Nom d'utilisateur</Text>
+            <View style={{ ...styles.inputView, backgroundColor: colors.input }}>
                 <TextInput
                     placeholder="saisir votre nom d'utilisateur"
                     onChangeText={onChangeUsername}
@@ -24,8 +31,8 @@ const Formlogin = ({ onChangeUsername, onChangePassword, onSubmit, loading }) =>
                 />
             </View>
 
-            <Text style={styles.label}>Mot de passe</Text>
-            <View style={styles.inputView}>
+            <Text style={{ ...styles.label, color: colors.label }}>Mot de passe</Text>
+            <View style={{ ...styles.inputView, backgroundColor: colors.input }}>
                 <TextInput
                     ref={secondTextInput}
                     placeholder="saisir votre mot de passe"
@@ -39,8 +46,8 @@ const Formlogin = ({ onChangeUsername, onChangePassword, onSubmit, loading }) =>
             {loading ?
                 <ActivityIndicator />
                 :
-                <TouchableOpacity onPress={onSubmit} style={styles.button}>
-                    <Text style={styles.text}>Se connecter</Text>
+                <TouchableOpacity onPress={onSubmit} style={{ ...styles.button, borderColor: colors.button }}>
+                    <Text style={{ ...styles.text, color: colors.text }}>Se connecter</Text>
                 </TouchableOpacity>
             }
         </View>
@@ -57,7 +64,6 @@ const styles = StyleSheet.create({
         fontFamily: 'monospace'
     },
     inputView: {
-        backgroundColor: "#c9acd8",
         borderRadius: 30,
         marginTop: 10,
         marginBottom: 20,
