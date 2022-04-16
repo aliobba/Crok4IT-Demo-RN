@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { encryptTransform } from 'redux-persist-transform-encrypt';
 
 import authReducer from './auth/reducer';
+import productReducer from './product/reducer';
 
 let composeEnhancers = compose;
 
@@ -23,7 +24,8 @@ const encryptor = encryptTransform({
 })
 
 const rootReducer = combineReducers({
-  authReducer: authReducer
+  authReducer: authReducer,
+  productReducer: productReducer
 })
 
 // Middleware: Redux Persist Config

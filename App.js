@@ -4,7 +4,7 @@ import {
   DarkTheme,
 } from '@react-navigation/native';
 import React from 'react';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, LogBox } from 'react-native';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import { Provider } from 'react-redux';
 import { store, persistor } from './src/redux/store'
@@ -54,6 +54,11 @@ function App() {
   }), [theme]);
 
   React.useEffect(() => {
+    LogBox.ignoreLogs(["EventEmitter.removeListener"])
+  }, []);
+
+  React.useEffect(() => {
+
     setTheme(scheme);
   }, [scheme]);
 

@@ -1,37 +1,31 @@
 import { useTheme } from '@react-navigation/native';
-import React from 'react';
-import { View, StyleSheet, Text, Switch } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 
 import { AuthContext } from '../../components/AuthContext';
-import Button from '../../components/Button';
+// import Button from '../../components/Button';
+import Productlist from '../../components/ProductList';
 import { LogoutAction } from '../../redux/auth/action';
+import { ProductLimitedAction } from '../../redux/product/action';
 
 
-const Home = ({ LogoutAction }) => {
+const Home = ({ token, product, loading_product, ProductLimitedAction }) => {
     const { colors } = useTheme();
 
     const { toggleTheme, theme } = React.useContext(AuthContext);
 
+    useEffect(() => {
+        ProductLimitedAction('5', token);
+    }, []);
+
     return (
         <View style={{ ...styles.container, backgroundColor: colors.background }}>
-            <View style={{ flexDirection: 'row', position: 'absolute', left: 0, top: 0 }}>
-                <Text style={{ fontSize: 20 }}>{theme === 'dark' ? '🌞' : '🌚'}</Text>
-                <Switch
-                    style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
-                    trackColor={{ false: "#767577", true: "#f4f3f4" }}
-                    thumbColor={theme === 'dark' ? "#f48037" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={() => { toggleTheme(); }}
-                    value={theme === 'dark' ? true : false}
-                />
-            </View>
 
-            <Text style={{ color: colors.text }}>HOME</Text>
+            <Productlist /* product={product} loading={loading_product} */ /* ProductLimitedAction={() => ProductLimitedAction((product ? product.length + 5 : 5).toString(), token)} */ />
 
-            <Button onSubmit={() => LogoutAction()}>
-                Se deconnecter
-            </Button>
+            {/* <Text style={{ color: colors.text }}>HOME</Text> */}
+
         </View >
     );
 }
@@ -47,13 +41,17 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
         //auth
-        token: state.authReducer.token
+        token: state.authReducer.token,
+        loading: state.authReducer.loading,
+        product: state.productReducer.products,
+        loading_product: state.productReducer.loading,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        LogoutAction: () => dispatch(LogoutAction())
+        LogoutAction: () => dispatch(LogoutAction()),
+        ProductLimitedAction: (numItems, token) => dispatch(ProductLimitedAction(numItems, token))
     }
 }
 

@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { AuthStackScreen, HomeStackSreen } from './'
 
-const Navigationroot = ({ token }) => {
+const NavigationRoot = ({ token }) => {
     return (
         <>
             {!token ?
@@ -23,5 +22,4 @@ const mapStateToProps = (state) => {
 }
 
 
-
-export default connect(mapStateToProps)(Navigationroot);
+export default connect(mapStateToProps)(NavigationRoot);
