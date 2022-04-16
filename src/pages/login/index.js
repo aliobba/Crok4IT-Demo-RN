@@ -38,7 +38,7 @@ const Login = (props) => {
             setPrevLoading(false)
             Alert.alert('Erreur Authentification', 'nom d\'utilisateur ou mot de passe incorrect !')
         }
-        
+
     }, [props.loading, props.token]);
 
     return (

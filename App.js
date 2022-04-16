@@ -17,7 +17,7 @@ const Light = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: 'white',
+    background: '#F9F9F9',
     input: '#c9acd8',
     label: 'black',
     button: 'black',

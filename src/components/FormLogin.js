@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { View, StyleSheet, TextInput, TouchableOpacity, Text, ActivityIndicator, Dimensions } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, StyleSheet, TextInput, TouchableOpacity, Text, ActivityIndicator, Dimensions, Image } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
 import { AuthContext } from './AuthContext';
@@ -8,6 +8,8 @@ import { AuthContext } from './AuthContext';
 const { width, height } = Dimensions.get('screen')
 
 const Formlogin = ({ onChangeUsername, onChangePassword, onSubmit, loading }) => {
+
+    const [securePwd, setsecurePwd] = useState(true);
 
     const secondTextInput = useRef();
 
@@ -40,11 +42,23 @@ const Formlogin = ({ onChangeUsername, onChangePassword, onSubmit, loading }) =>
                     ref={secondTextInput}
                     placeholder="saisir votre mot de passe"
                     onChangeText={onChangePassword}
+                    secureTextEntry={securePwd}
                     placeholderTextColor={colors.card}
                     style={styles.TextInput}
                     onSubmitEditing={() => onSubmit()}
                     returnKeyType="go"
                 />
+                {securePwd ?
+                    <TouchableOpacity style={{ position: 'absolute', right: 20, top: 15 }} onPress={() => setsecurePwd(!securePwd)}>
+                        {/* <Text style={{ fontWeight: 'bold' }}>S</Text> */}
+                        <Image source={require('../assets/images/eye.png')} style={{ height: 20, width: 30, tintColor: colors.background }} />
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity style={{ position: 'absolute', right: 20, top: 15 }} onPress={() => setsecurePwd(!securePwd)}>
+                        {/* <Text style={{ fontWeight: 'bold' }}>O</Text> */}
+                        <Image source={require('../assets/images/no_eye.png')} style={{ height: 20, width: 30, tintColor: colors.background }} />
+                    </TouchableOpacity>
+                }
             </View>
 
             {loading ?
@@ -74,7 +88,8 @@ const styles = StyleSheet.create({
     },
     TextInput: {
         width: width * 0.6,
-        paddingHorizontal: 20,
+        paddingRight: 40,
+        paddingLeft: 15,
         paddingVertical: 10,
         color: 'black'
     },

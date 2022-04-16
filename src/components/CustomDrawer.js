@@ -3,7 +3,6 @@ import {
     View,
     Text,
     ImageBackground,
-    Image,
     TouchableOpacity,
     Switch,
     ActivityIndicator
@@ -53,7 +52,6 @@ const CustomDrawer = (props) => {
                     <ActivityIndicator style={{ marginVertical: 20 }} /> :
                     <TouchableOpacity onPress={() => props.LogoutAction()} style={{ paddingVertical: 15 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Ionicons name="exit-outline" size={22} color={colors.text} />
                             <Text
                                 style={{
                                     fontSize: 15,
