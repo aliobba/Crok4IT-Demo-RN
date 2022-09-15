@@ -1,5 +1,8 @@
 package com.demoproject;
 
+import android.os.Bundle;
+
+import com.demoproject.Splash.Splash;
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {
@@ -11,5 +14,11 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "DemoProject";
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    Splash.show(this);  // here
+    super.onCreate(null);
   }
 }

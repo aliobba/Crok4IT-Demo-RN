@@ -7,7 +7,7 @@ import Login from '../pages/login';
 import Home from "../pages/home";
 
 import { useTheme } from "@react-navigation/native";
-import { AuthContext } from "../components/AuthContext";
+import { AuthContext } from "../context/authDarkModeContext";
 import CustomDrawer from "../components/CustomDrawer";
 
 const RootStack = createStackNavigator();
@@ -40,7 +40,7 @@ const DrawerSreen = ({ navigation }) => {
 
             <Drawer.Screen name="HomeScreen" component={Home} options={{
                 title: 'Produit',
-                headerTransparent: true,
+                headerTransparent: false,
                 headerStyle: {
                     backgroundColor: colors.background,
                 },
@@ -49,23 +49,7 @@ const DrawerSreen = ({ navigation }) => {
                     fontSize: 14
                 },
                 headerTitleAlign: "center",
-                /* headerBackImage: () => (<AntDesign name='left' style={{ marginLeft: 6 }} color={'#000'} size={20} />), */
             }} />
-
-           {/*  <Drawer.Screen name="Card" component={Home} options={{
-                title: 'Card',
-                headerTransparent: true,
-                headerStyle: {
-                    backgroundColor: colors.background,
-                },
-                headerTintColor: colors.text,
-                headerTitleStyle: {
-                    fontSize: 14
-                },
-                headerTitleAlign: "center",
-               
-            }} /> */}
-
 
         </Drawer.Navigator>
     )

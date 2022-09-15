@@ -1,16 +1,30 @@
+/* -------------------------------------------------------------------------- */
+/*                                Dependencies                                */
+/* -------------------------------------------------------------------------- */
+// Packages
 import React from 'react';
-import { View, StyleSheet, FlatList, Image, Text, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, FlatList, Text, ActivityIndicator } from 'react-native';
+
+// Redux
 import { connect } from 'react-redux';
 import { ProductLimitedAction } from '../redux/product/action';
-import { Rating, AirbnbRating } from 'react-native-ratings';
+
+// Hooks
 import { useTheme } from '@react-navigation/native';
 
-const Productlist = ({ token, product, loading, ProductLimitedAction }) => {
+// Components
+import ProductItem from './ProductItem';
+
+/* -------------------------------------------------------------------------- */
+/*                                     APP                                    */
+/* -------------------------------------------------------------------------- */
+const Productlist = ({ product, loading, ProductLimitedAction }) => {
 
     const { colors } = useTheme();
 
+    // Lazy loading
     const renderFooter = () => {
-        //it will show indicator at the bottom of the list when data is loading otherwise it returns null
+
         if (!loading) return null;
         return (
             <ActivityIndicator
@@ -19,119 +33,83 @@ const Productlist = ({ token, product, loading, ProductLimitedAction }) => {
         );
     };
 
+    // Items separator
     const renderSeparator = () => {
         return (
             <View
-                style={{
-                    height: 2,
-                    width: '100%',
-                    backgroundColor: '#CED0CE'
-                }}
+                style={styles.renderSeparatorView}
             />
         );
     };
 
+    // Action to render more 5 items
     const handleLoadMore = () => {
-
         var page = product.length + 5; // increase page by 1
-        ProductLimitedAction(page.toString(), token); // method for API call 
-
+        ProductLimitedAction(page.toString()); // method for API call 
     };
 
+    // If array product's empty
     if (product && product.length === 0) {
-        return <Text style={{ flex: 0.9 }}>Aucun Produit Disponible</Text>
+        return <Text style={{ flex: 1 }}>Aucun Produit Disponible</Text>
     }
 
+    // render Item to flatlist
+    const renderItem = ({ item }) => <ProductItem item={item} />
+
+    // key of item
+    const keyExtractor = (item, index) => index.toString()
+
+    /* -------------------------------- RENDERING ------------------------------- */
     return (
-        <View style={{ flex: 0.9 }}>
+        <View style={{ flex: 1 }}>
             {product ?
                 < FlatList
                     data={product}
-                    renderItem={({ item }) => (
-                        <View style={{
-                            flexDirection: 'row',
-                            paddingVertical: 10,
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            <View style={{ flexDirection: 'column', padding: 16, alignItems: 'center', }}>
-                                <Image source={{ uri: item.image }}
-                                    style={{
-                                        height: 250,
-                                        width: 250,
-                                        borderRadius: 5,
-                                        marginBottom: 38
-                                    }} />
-                                <Text style={{
-                                    fontSize: 16,
-                                    alignItems: 'center',
-                                    color: '#65A7C5',
-                                    textAlign: 'center'
-                                }}>{item.title}</Text>
-                                <AirbnbRating
-                                    count={5}
-                                    size={40}
-                                    defaultRating={item.rating.rate}
-                                    isDisabled={true}
-                                />
-                                {/* <Rating
-                                    type='heart'
-                                    readonly={true}
-                                    startingValue={item.rating.rate}
-                                    ratingCount={5}
-                                    imageSize={60}
-                                    onFinishRating={this.ratingCompleted}
-                                /> */}
-                            </View>
-                        </View>
-                    )}
-                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={renderItem}
+                    keyExtractor={keyExtractor}
                     ItemSeparatorComponent={renderSeparator}
                     ListFooterComponent={renderFooter}
-                    onEndReachedThreshold={0.4}
                     onEndReached={handleLoadMore}
+                    onEndReachedThreshold={0.4}
                 />
-                : <Text style={{ flex: 0.9, color: colors.label, marginTop: 30 }}>merci de patienter...</Text>
+                :
+                <Text
+                    style={{ ...styles.text, color: colors.label, }} >
+                    merci de patienter...
+                </Text>
             }
-        </View>
+        </View >
     );
 }
 
-const styles = StyleSheet.create({})
+/* -------------------------------- STYLESHEET ------------------------------- */
+const styles = StyleSheet.create({
+    text: {
+        flex: 0.9,
+        marginTop: 30
+    },
+    renderSeparatorView:
+    {
+        height: 2,
+        width: '100%',
+        backgroundColor: '#CED0CE'
+    }
+})
 
+/* -------------------------------- REDUX get state props from store ------------------------------- */
 const mapStateToProps = (state) => {
     return {
-        //auth
         token: state.authReducer.token,
         product: state.productReducer.products,
         loading: state.productReducer.loading,
     }
 }
 
+/* -------------------------------- REDUX dispatch props to store ------------------------------- */
 const mapDispatchToProps = (dispatch) => {
     return {
-        ProductLimitedAction: (numItems, token) => dispatch(ProductLimitedAction(numItems, token))
+        ProductLimitedAction: (numItems) => dispatch(ProductLimitedAction(numItems))
     }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Productlist);
-
-
-/* 
-<View style={{
-    flexDirection: 'row',
-    padding: 50,
-    alignItems: 'center'
-}}>
-    <Image source={{ uri: item.image }}
-        style={{
-            height: 50,
-            width: 50,
-            marginRight: 10
-        }} />
-    <Text style={{
-        fontSize: 18,
-        alignItems: 'center',
-        color: '#65A7C5',
-    }}>{item.title}</Text>
-</View> */

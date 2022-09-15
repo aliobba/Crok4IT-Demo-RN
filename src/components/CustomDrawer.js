@@ -15,7 +15,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useTheme } from '@react-navigation/native';
-import { AuthContext } from './AuthContext';
+import { AuthContext } from '../context/authDarkModeContext';
 import { LogoutAction } from '../redux/auth/action';
 import { connect } from 'react-redux';
 

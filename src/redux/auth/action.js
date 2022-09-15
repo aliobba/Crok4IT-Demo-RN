@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-import { url, auth, login, users } from '../../values/Api'
+import axiosInstance from '../../apis/AxiosInstance';
 
 import {
     LOGIN,
@@ -13,22 +11,19 @@ import {
     SUCCESS_LOGOUT
 } from './type';
 
-
-
 export const LoginAction = (data) => {
     return (dispatch) => {
         dispatch({ type: LOGIN });
-        console.log(data);
-        axios.post(url + auth + login, data)
-            .then((res) => {
-                console.log({ res });
+        axiosInstance.post('/auth/login', data)
+        .then((res) => {
+
                 dispatch({
                     type: SUCCESS_LOGIN,
                     res: res.data
                 });
             })
             .catch((err) => {
-                console.log({ err });
+                
                 dispatch({
                     type: ERROR_LOGIN,
                     err
@@ -41,7 +36,7 @@ export const RegisterAction = (data) => {
     return (dispatch) => {
         dispatch({ type: REGISTER });
 
-        axios.post(url + users, data)
+        axiosInstance.post('/users', data)
             .then((res) => {
                 dispatch({
                     type: SUCCESS_REGISTER,
