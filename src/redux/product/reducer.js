@@ -23,7 +23,7 @@ export default function productReducer(state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                products: action.res
+                products: action.res.data
             }
 
         case ERROR_PRODUCT:

@@ -73,9 +73,9 @@ function App() {
     LogBox.ignoreLogs(["EventEmitter.removeListener"]);
     LogBox.ignoreLogs(["Unable to define method 'getConstants()' on NativeModule 'RNConfig'. "]);
     if (Platform.OS === "android") {
-      setTimeout(() => {
-        NativeModules.SplashScreen.hide();
-      }, 6000);
+      NativeModules.SplashScreen.hide();
+      /* setTimeout(() => {
+      }, 6000); */
     }
 
   },[]);

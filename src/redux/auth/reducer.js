@@ -29,7 +29,7 @@ export default function authReducer(state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                token: action.res.token
+                token: action.res.data.token
             }
 
         case ERROR_LOGIN:

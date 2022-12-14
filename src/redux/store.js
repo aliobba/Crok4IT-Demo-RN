@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
+import createSagaMiddleware from "redux-saga";
 
 import { persistStore, persistReducer } from 'redux-persist';
 
@@ -9,10 +9,13 @@ import { encryptTransform } from 'redux-persist-transform-encrypt';
 
 import authReducer from './auth/reducer';
 import productReducer from './product/reducer';
+import authServicesSaga from './auth/saga';
+import productServicesSaga from './product/saga';
 
 let composeEnhancers = compose;
 
 if (__DEV__) {
+  console.log('In DEV');
   composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 }
 
@@ -41,10 +44,16 @@ const persistConfig = {
   blacklist: []
 };
 
+const sagaMiddleware = createSagaMiddleware();
+
 // Middleware: Redux Persist Persisted Reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-const store = createStore(persistedReducer, composeEnhancers(applyMiddleware(thunk)));
+const store = createStore(persistedReducer, composeEnhancers(applyMiddleware(sagaMiddleware)));
+
+sagaMiddleware.run(authServicesSaga);
+sagaMiddleware.run(productServicesSaga);
+
 // Middleware: Redux Persist Persister
 let persistor = persistStore(store);
 

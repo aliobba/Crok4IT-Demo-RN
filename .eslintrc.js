@@ -1,41 +1,49 @@
 module.exports = {
-  root: true,
-  extends: [
-    "eslint:recommended",
-    "airbnb-base",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended",
-    "plugin:mdx/recommended",
-    "@react-native-community",
-  ],
-  parser: "babel-eslint",
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: "module",
-  },
-  env: {
-    es6: true,
-    browser: true,
-    node: true,
-  },
-  "rules": {
-    "max-len": ["warn", { code: 360 }],
-    "arrow-parens": ["warn", "always"],
-    "arrow-body-style": "off",
-    "camelcase": "warn",
-    "no-underscore-dangle": "off",
-    "no-param-reassign": "warn",
-    "no-unused-vars": "warn",
-    "class-methods-use-this": "warn",
-    "prefer-destructuring": "warn",
-    "prefer-const": "warn",
-    "no-shadow": "warn",
-    "no-empty": "warn",
-    "import/prefer-default-export": "off",
-    "import/no-cycle": "warn",
-    "react/jsx-first-prop-new-line": [1, "multiline"],
-    "react/prop-types": ["off"],
-    "quotes": [2, "single", { avoidEscape: true }],
-    "consistent-return": "off",
-  },
+	root: true,
+	env: {
+		node: true,
+		browser: true,
+		es2021: true,
+		"react-native/react-native": true,
+		"jest/globals": true
+	},
+	extends: [
+    '@react-native-community',
+		"plugin:react/recommended",
+		"prettier",
+		"eslint:recommended",
+		"plugin:jest/recommended"
+	],
+
+	parserOptions: {
+		ecmaFeatures: {
+			jsx: true
+		},
+		ecmaVersion: "latest",
+		sourceType: "module"
+	},
+
+	plugins: ["react", "react-native", "detox"],
+	ignorePatterns: ["!.*", "dist", "node_modules"],
+	rules: {
+		indent: [
+			"error",
+			"tab",
+			{
+				SwitchCase: 1,
+				ignoredNodes: ["ConditionalExpression"]
+			}
+		],
+		"linebreak-style": ["error", "unix"],
+		quotes: ["error", "double"],
+		semi: ["error", "always"],
+		"no-console": ["error"],
+		"no-unused-vars": ["error", { vars: "all" }]
+	},
+
+	settings: {
+		react: {
+			version: "detect"
+		}
+	}
 };
